@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath "io.quarkus:quarkus-gradle-plugin:${quarkusPluginVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'io.quarkus'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    //hibernate
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
+
+    compile group:'io.swagger', name:'swagger-jaxrs', version:'1.5.0'
+//sqlite dialect
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
+
+    compile group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.0'
+
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-resteasy'
+
+    implementation 'io.quarkus:quarkus-resteasy-jsonb'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+
+    nativeTestImplementation 'io.quarkus:quarkus-junit5'
+    nativeTestImplementation 'io.rest-assured:rest-assured'
+}
+
+group 'org.waflo'
+version '1.0'
+
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+
