@@ -22,7 +22,7 @@ dependencies {
     //hibernate
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
 
-    compile group:'io.swagger', name:'swagger-jaxrs', version:'1.5.0'
+     compile group:'io.quarkus', name:'quarkus-smallrye-openapi'
 //sqlite dialect
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 

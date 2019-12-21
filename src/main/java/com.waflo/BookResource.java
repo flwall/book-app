@@ -1,10 +1,7 @@
 package com.waflo;
 
-import com.waflo.model.Author;
 import com.waflo.model.Book;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,19 +15,13 @@ import java.net.URISyntaxException;
 
 @Path("/books")
 public class BookResource {
-    private final SessionFactory sessionFactory;
+
     private final Logger logger;
+    private DBService dbService;
 
     public BookResource() {
-        Configuration configuration = new Configuration();
-
-        configuration.configure();
-        configuration.addAnnotatedClass(Book.class);
-        configuration.addAnnotatedClass(Author.class);
-
-        sessionFactory = configuration.buildSessionFactory();
         logger = LoggerFactory.getLogger(BookResource.class);
-
+        dbService = DBService.getInstance();
     }
 
     @POST
@@ -41,7 +32,7 @@ public class BookResource {
         logger.warn("TITLE: " + book.title);
 
 
-        Session sess = sessionFactory.openSession();
+        Session sess = dbService.openSession();
         sess.beginTransaction();
         Serializable id = sess.save(book);
 
@@ -59,7 +50,7 @@ public class BookResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Book[] books() {
-        Session sess = sessionFactory.openSession();
+        Session sess = dbService.openSession();
         CriteriaQuery<Book> query = sess.getCriteriaBuilder().createQuery(Book.class);
 
         return sess.createQuery(query.select(query.from(Book.class))).getResultList().toArray(new Book[0]);
@@ -69,7 +60,7 @@ public class BookResource {
     @GET
     @Path("/{id}")
     public Response findBook(@PathParam(value = "id") int id) {
-        Session sess = sessionFactory.openSession();
+        Session sess = dbService.openSession();
 
         Book b = sess.get(Book.class, id);
         if (b == null)
