@@ -5,16 +5,23 @@ import com.waflo.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.slf4j.LoggerFactory;
 
-class DBService {
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class DBService {
 
     private final SessionFactory sessionFactory;
     private static DBService instance;
 
+
     static DBService getInstance() {
         if (instance == null) instance = new DBService();
         return instance;
+    }
+
+    public String dbPath() {
+        return "./";
     }
 
     private DBService() {
@@ -27,7 +34,8 @@ class DBService {
         sessionFactory = configuration.buildSessionFactory();
 
     }
-    Session openSession(){
+
+    Session openSession() {
         return sessionFactory.openSession();
     }
 
