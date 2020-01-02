@@ -1,5 +1,6 @@
 import React, { Component, FormEvent } from "react";
-
+import store from '../redux/store';
+import { ADD_BOOK } from "../redux/actions";
 interface Props {}
 interface State {
   bookTitle: string;
@@ -17,6 +18,8 @@ export default class BookUploadForm extends Component<Props, State> {
   }
 
   render() {
+    store.dispatch({type:ADD_BOOK, books:[{title:'A Men using Redux', author:{name:'Timo Stuttner'}}]});
+    console.log(store.getState());
     return (
       <div className="bookuploadform">
         <form onSubmit={this.handleSubmit}>

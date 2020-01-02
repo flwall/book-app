@@ -1,15 +1,16 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-import BookUploadForm from './BookUploadForm/BookUploadForm';
+import BookView from "./BookView/BookView";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <BookUploadForm/>
-      
-    </div>
+    <Provider store={store}>
+      <BookView  />
+    </Provider>
   );
-}
+};
 
 export default App;
