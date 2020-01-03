@@ -1,11 +1,14 @@
 package com.waflo.model;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -21,11 +24,13 @@ public class Book {
     @Column
     private String description;
 
-    @ElementCollection
-    private List<String> tags = new LinkedList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    private Set<String> tags = new HashSet<>();
 
-    @ElementCollection
-    private List<String> formats = new LinkedList<>();          //PDF, EPUB, MOBI
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    private Set<String> formats = new HashSet<>();          //PDF, EPUB, MOBI
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @NotNull(message = "Author must not be null")
@@ -63,19 +68,19 @@ public class Book {
         this.description = description;
     }
 
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
-    public List<String> getFormats() {
+    public Set<String> getFormats() {
         return formats;
     }
 
-    public void setFormats(List<String> formats) {
+    public void setFormats(Set<String> formats) {
         this.formats = formats;
     }
 
@@ -100,7 +105,6 @@ public class Book {
     }
 
     public void setRating(int rating) {
-
         this.rating = rating;
     }
 }

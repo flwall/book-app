@@ -20,8 +20,9 @@ repositories {
 
 dependencies {
     //hibernate
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
+    //  compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
 
+    compile 'io.quarkus:quarkus-hibernate-orm'
     compile group: 'io.quarkus', name: 'quarkus-smallrye-openapi'
 //sqlite dialect
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
