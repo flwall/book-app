@@ -29,6 +29,9 @@ dependencies {
 
     compile group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.0'
 
+    compile 'io.quarkus:quarkus-jdbc-derby'
+    compile group: 'org.apache.derby', name: 'derby', version: '10.12.1.1'
+
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-resteasy'
 

@@ -20,7 +20,7 @@ public class AuthorResource {
 
     private final Logger logger;
     @Inject
-    private DBService dbService;
+    DBService dbService;
 
     public AuthorResource() {
         logger = LoggerFactory.getLogger(AuthorResource.class);

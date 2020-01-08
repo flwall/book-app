@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -37,13 +38,17 @@ public class BookResource {
     public Response insertBook(@Valid Book book) {
 
         book.setPath_to_book(dbService.dbPath() + "/books/" + book.getAuthor().getName() + "/" + book.getTitle() + "/");
-        if (!new File(book.getPath_to_book()).mkdirs()) return Response.serverError().build();
+        new File(book.getPath_to_book()).mkdirs();
 
         if (book.getRating() < -1 || book.getRating() > 5)
             return Response.status(Response.Status.BAD_REQUEST).entity("The Rating has to be between 0 and 5").build();
+        try {
+            dbService.insertBook(book);
 
-        dbService.insertBook(book);
-        dbService.flush();
+        } catch (EntityExistsException ex) {
+
+            return Response.status(Response.Status.CONFLICT).entity("{\"error\" : \"The Book already exists\"}").build();
+        }
         try {
             return Response.created(new URI("/books/" + book.getId())).build();
         } catch (URISyntaxException e) {

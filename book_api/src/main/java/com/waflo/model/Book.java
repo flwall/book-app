@@ -17,7 +17,7 @@ public class Book {
     @GeneratedValue
     private int id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
     @NotEmpty(message = "Title must not be empty")
     private String title;
 
@@ -32,7 +32,7 @@ public class Book {
     @Fetch(FetchMode.SELECT)
     private Set<String> formats = new HashSet<>();          //PDF, EPUB, MOBI
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @NotNull(message = "Author must not be null")
     private Author author;
 
@@ -107,5 +107,7 @@ public class Book {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+
 }
 
