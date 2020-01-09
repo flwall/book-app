@@ -70,6 +70,7 @@ public class BookResource {
 
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findBook(@PathParam(value = "id") int id) {
 
         Book b = dbService.get(Book.class, id);

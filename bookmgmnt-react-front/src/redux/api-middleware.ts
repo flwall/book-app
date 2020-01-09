@@ -1,13 +1,16 @@
 import {
   fetchBooksError,
-  fetchBooksPending,
-  fetchBooksSuccess
+  actionPending,
+  fetchBooksSuccess,
+  ADD_BOOK_SUCCESS,
+  ADD_BOOK_ERROR
 } from "./actions";
-import { ALL_BOOKS } from "./api-constants";
+import { ALL_BOOKS, ADD_BOOK } from "./api-constants";
+import { Book } from "./model";
 
-function fetchBooks() {
+export function fetchBooks() {
   return async (dispatch: any) => {
-    dispatch(fetchBooksPending());
+    dispatch(actionPending());
     try {
       let fetched = await fetch(ALL_BOOKS);
       let books = await fetched.json();
@@ -20,4 +23,26 @@ function fetchBooks() {
   };
 }
 
-export default fetchBooks;
+export function postBook(book: Book) {
+  return async (dispatch: any) => {
+    dispatch(actionPending());
+    try {
+      const rawResp = await fetch(ADD_BOOK, {
+        method: "POST",
+        body: JSON.stringify(book)
+      });
+
+      if (rawResp.ok) {
+        dispatch({ type: ADD_BOOK_SUCCESS });
+      } else
+        dispatch({
+          type: ADD_BOOK_ERROR,
+          error: JSON.parse(await rawResp.json())
+        });
+    } catch (e) {
+      dispatch({ type: ADD_BOOK_ERROR, error: e });
+    }
+  };
+}
+
+

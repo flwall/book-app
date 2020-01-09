@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { getBooks, getBooksError, getBooksPending } from "../redux/reducers";
 import { connect } from "react-redux";
-import fetchBooks from "../redux/api-middleware";
+import { fetchBooks } from "../redux/api-middleware";
 import { bindActionCreators } from "redux";
 import { Book } from "../redux/model";
 import BookList from "./BookList";

@@ -6,11 +6,10 @@ interface BookProps {
 }
 export default class BookList extends Component<BookProps, {}> {
   render() {
-    
     return (
       <div>
         {this.props.books.map((item, idx) => (
-          <p>
+          <p key={idx}>
             Title: {item.title}, Author: {item.author.name}
           </p>
         ))}

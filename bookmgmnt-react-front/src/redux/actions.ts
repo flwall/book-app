@@ -1,12 +1,14 @@
 import { Book } from "./model";
-export const ADD_BOOK = "ADD_BOOK";
 
 export const FETCH_BOOKS_SUCCESS = "FETCH_BOOKS_SUCCESS";
-export const FETCH_BOOKS_PENDING = "FETCH_BOOKS_PENDING";
+export const ACTION_PENDING = "ACTION_PENDING";
 export const FETCH_BOOKS_ERROR = "FETCH_BOOKS_ERROR";
-export function fetchBooksPending() {
+export const ADD_BOOK_SUCCESS="ADD_BOOK_SUCCESS";
+export const ADD_BOOK_ERROR="ADD_BOOK_ERROR";
+
+export function actionPending() {
   return {
-    type: FETCH_BOOKS_PENDING
+    type: ACTION_PENDING
   };
 }
 

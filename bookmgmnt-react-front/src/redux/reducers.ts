@@ -1,5 +1,5 @@
 import {
-  FETCH_BOOKS_PENDING,
+  ACTION_PENDING,
   FETCH_BOOKS_SUCCESS,
   FETCH_BOOKS_ERROR
 } from "./actions";
@@ -7,7 +7,7 @@ import initialState from "./initialState";
 
 export function booksReducer(state = initialState, action: any) {
   switch (action.type) {
-    case FETCH_BOOKS_PENDING:
+    case ACTION_PENDING:
       return {
         ...state,
         pending: true
