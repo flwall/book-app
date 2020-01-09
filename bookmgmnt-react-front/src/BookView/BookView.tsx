@@ -28,7 +28,7 @@ class BookView extends Component<BookProps, {}> {
 
   shouldComponentRender() {
     const { pending } = this.props;
-    console.log(`Pending: ${pending}`);
+    
     if (pending === true) return false;
 
     return true;
@@ -38,11 +38,14 @@ class BookView extends Component<BookProps, {}> {
     const { books, pending, error } = this.props;
 
     if (!this.shouldComponentRender()) {
-      console.log("Loading Books....");
+      
       return "Loading Books...";
     }
-    console.log(`Pending: ${pending}`);
-    console.log("books:" + books);
+    if (error !== null) {
+      alert("Failed to load Books");
+      return null;
+    }
+    
     return (
       <div className="product-list-wrapper">
         {error && <span className="product-list-error">{error}</span>}

@@ -14,13 +14,19 @@ export function fetchBooks() {
     try {
       let fetched = await fetch(ALL_BOOKS);
       let books = await fetched.json();
-      console.log(books);
+      
       dispatch(fetchBooksSuccess(books));
       return books;
     } catch (e) {
+      
       dispatch(fetchBooksError(e));
     }
   };
+}
+
+export function uploadFile(f: File) {
+  let data = new FormData();
+  data.append("file", f);
 }
 
 export function postBook(book: Book) {
@@ -44,5 +50,3 @@ export function postBook(book: Book) {
     }
   };
 }
-
-

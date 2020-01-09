@@ -3,30 +3,33 @@ import {
   FETCH_BOOKS_SUCCESS,
   FETCH_BOOKS_ERROR
 } from "./actions";
-import initialState from "./initialState";
+import { initialState } from "./initialState";
 
-export function booksReducer(state = initialState, action: any) {
+export function booksReducer(state: any = initialState, action: any) {
   switch (action.type) {
     case ACTION_PENDING:
       return {
         ...state,
-        pending: true
+        books: [],
+        pending: true,
+        error: null
       };
     case FETCH_BOOKS_SUCCESS:
-      console.log("FETCHED BOOKS SUCCESSFULLY");
       const books = Array.from(action.payload);
-      console.log(books);
+
       return {
         ...state,
         pending: false,
-        books: books
+        books: books,
+        error: null
       };
     case FETCH_BOOKS_ERROR:
-      console.log("ERROR FETCHING BOOKS" + action.error);
+      
       return {
         ...state,
         pending: false,
-        books: action.error
+        books: [],
+        error: action.error
       };
     default:
       return state;
