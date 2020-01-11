@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 
@@ -29,19 +30,19 @@ public class DBService {
     public Book[] getBooks() {
 
 
-        var builder = em.getCriteriaBuilder();
-        var query = builder.createQuery(Book.class);
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Book> query = builder.createQuery(Book.class);
 
         return em.createQuery(query.select(query.from(Book.class))).getResultList().toArray(new Book[0]);
     }
 
     @Transactional()
     public void insertBook(Book book) {
-        var authorObj = em.createQuery("select a from Author a where a.name like :authName", Author.class).setParameter("authName", book.getAuthor().getName()).getResultStream().findFirst().orElse(null);
+        Author authorObj = em.createQuery("select a from Author a where a.name like :authName", Author.class).setParameter("authName", book.getAuthor().getName()).getResultStream().findFirst().orElse(null);
         if (authorObj != null)
             book.setAuthor(authorObj);
 
-        var b = em.createQuery("select b from Book b where b.title like :title", Book.class).setParameter("title", book.getTitle()).getResultStream().findFirst().orElse(null);
+        Book b = em.createQuery("select b from Book b where b.title like :title", Book.class).setParameter("title", book.getTitle()).getResultStream().findFirst().orElse(null);
         if (b != null)
             throw new EntityExistsException("Book with title " + book.getTitle() + " already exists.");
 

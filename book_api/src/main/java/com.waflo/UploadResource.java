@@ -76,7 +76,7 @@ public class UploadResource {
         Map<String, List<InputPart>> formDataMap = input.getFormDataMap();
         List<InputPart> inputParts = formDataMap.get("bookFile");//name of the file uploaded has to be like this
 
-        for (var part : inputParts) {
+        for (InputPart part : inputParts) {
 
             String fn = getFilename(part.getHeaders());
             try {
