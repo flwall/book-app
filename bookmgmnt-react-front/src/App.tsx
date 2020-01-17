@@ -9,8 +9,11 @@ import BookUploadForm from "./BookUploadForm/BookUploadForm";
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <BookUploadForm />
-      <BookView />
+      <BookView/>
+
+<br/>
+      <BookUploadForm/>
+      
     </Provider>
   );
 };

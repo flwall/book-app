@@ -6,6 +6,7 @@ import { fetchBooks } from "../redux/api-middleware";
 import { bindActionCreators } from "redux";
 import { Book } from "../redux/model";
 import BookList from "./BookList";
+import { message } from "antd";
 
 interface BookProps {
   fetchBooks(): any;
@@ -35,15 +36,14 @@ class BookView extends Component<BookProps, {}> {
   }
 
   render() {
-    const { books, pending, error } = this.props;
+    const { books, error } = this.props;
 
     if (!this.shouldComponentRender()) {
-      
       return "Loading Books...";
     }
     if (error !== null) {
-      alert("Failed to load Books");
-      return null;
+      message.error("Failed to load books");
+      return "Failed to load Books";
     }
     
     return (

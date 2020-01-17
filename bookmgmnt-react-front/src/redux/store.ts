@@ -6,6 +6,7 @@ import {initialState} from "./initialState";
 
 const middlewares = [thunk];
 const composeEnhancers = composeWithDevTools({});
+
 const store: Store = createStore(
   booksReducer,
   initialState,

@@ -1,6 +1,6 @@
 export interface Book {
   title: string;
-
+  description: string;
   author: Author;
   rating: number;
 }
