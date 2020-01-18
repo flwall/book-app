@@ -1,5 +1,5 @@
 export const initialState = {
   pending: true,
-  books: [],
+  books: null,
   error: null
 };

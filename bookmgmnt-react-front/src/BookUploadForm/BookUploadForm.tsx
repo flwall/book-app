@@ -2,7 +2,7 @@ import "antd/dist/antd.css";
 import "./BookUploadForm.css";
 import React, { Component, FormEvent } from "react";
 import { Book } from "../redux/model";
-import { Form, Input, Button, Upload, Icon, Rate } from "antd";
+import { Form, Input, Button, Upload, Icon, Rate, message } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 
 interface Props {}
@@ -21,7 +21,7 @@ export default class BookUploadForm extends Component<Props, State> {
   constructor(props: Readonly<{}>) {
     super(props);
     this.state = {
-      book: { title: "", author: { name: "" }, description: "", rating: 0 },
+      book: {id:0, title: "", author: { name: "" }, description: "", rating: 0 },
       file: null
     };
   }
@@ -95,7 +95,22 @@ export default class BookUploadForm extends Component<Props, State> {
           <br />
           <div id="book-upload"> Select Book to upload: </div>
 
-          <Upload accept=".pdf,.txt,.mobi,.epub" name="bookFile" action="http://localhost:8585/upload">
+          <Upload
+            className="book-inp"
+            accept=".pdf,.txt,.mobi,.epub"
+            name="bookFile"
+            action="http://localhost:8585/upload"
+            data={{ timestamp: Date.now() }}
+            beforeUpload={(f, fl) => {
+              this.uploadCnt++;
+              if (this.uploadCnt > 1) {
+                message.error("Cannot upload multiple files");
+                return false;
+              }
+              return true;
+            }}
+            showUploadList={false}
+          >
             <Button>
               <Icon type="upload" />
               Click to upload a Book
@@ -109,4 +124,6 @@ export default class BookUploadForm extends Component<Props, State> {
       </div>
     );
   }
+
+ private uploadCnt: number = 0;
 }

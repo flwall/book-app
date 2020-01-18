@@ -1,7 +1,8 @@
 import {
   ACTION_PENDING,
   FETCH_BOOKS_SUCCESS,
-  FETCH_BOOKS_ERROR
+  FETCH_BOOKS_ERROR,
+  FETCH_BOOK_SUCCESS
 } from "./actions";
 import { initialState } from "./initialState";
 
@@ -24,13 +25,25 @@ export function booksReducer(state: any = initialState, action: any) {
         error: null
       };
     case FETCH_BOOKS_ERROR:
-      
       return {
         ...state,
         pending: false,
         books: [],
         error: action.error
       };
+    case FETCH_BOOK_SUCCESS: {
+      
+      const book=Object.assign({}, action.payload);
+      
+      const arr=[];
+      arr.push(book);
+      
+      return {
+        ...state,
+        pending: false,
+        books: arr
+      };
+    }
     default:
       return state;
   }
