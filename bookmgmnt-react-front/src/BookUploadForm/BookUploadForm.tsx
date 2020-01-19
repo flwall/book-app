@@ -1,34 +1,44 @@
 import "antd/dist/antd.css";
 import "./BookUploadForm.css";
 import React, { Component, FormEvent } from "react";
-import { Book } from "../redux/model";
-import { Form, Input, Button, Upload, Icon, Rate, message } from "antd";
+
+import { Form, Input, Button, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { Redirect } from "react-router-dom";
 
-interface Props {}
-interface State {
-  book: Book;
-  file: File | null;
-}
-
-export default class BookUploadForm extends Component<Props, State> {
+export default class BookUploadForm extends Component<any, any> {
   handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     console.log("Form Submitted");
   }
   rating: number = 0;
-  constructor(props: Readonly<{}>) {
+  constructor(props: any) {
     super(props);
-    this.state = {
-      book: {id:0, title: "", author: { name: "" }, description: "", rating: 0 },
-      file: null
-    };
+
+    if (!this.props.location.state) {
+      this.red = true;
+    } else {
+      let title: string = this.props.location.state.fn;
+      title = title.substring(0, title.lastIndexOf("."));
+      this.state = {
+        book: {
+          id: 0,
+          title: title,
+          author: { name: "" },
+          description: "",
+          rating: 0
+        },
+        file: null
+      };
+    }
   }
+  private red: boolean = false;
   fileChanged(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ file: e.target.files![0] });
   }
   render() {
+    if (this.red) return <Redirect to="/" />;
     return (
       <div className="bookuploadform">
         <h3 className="upload-title">Add a new Book</h3>
@@ -93,29 +103,7 @@ export default class BookUploadForm extends Component<Props, State> {
             }
           />
           <br />
-          <div id="book-upload"> Select Book to upload: </div>
 
-          <Upload
-            className="book-inp"
-            accept=".pdf,.txt,.mobi,.epub"
-            name="bookFile"
-            action="http://localhost:8585/upload"
-            data={{ timestamp: Date.now() }}
-            beforeUpload={(f, fl) => {
-              this.uploadCnt++;
-              if (this.uploadCnt > 1) {
-                message.error("Cannot upload multiple files");
-                return false;
-              }
-              return true;
-            }}
-            showUploadList={false}
-          >
-            <Button>
-              <Icon type="upload" />
-              Click to upload a Book
-            </Button>
-          </Upload>
           <br />
           <Button type="primary" htmlType="submit">
             Add Book
@@ -124,6 +112,4 @@ export default class BookUploadForm extends Component<Props, State> {
       </div>
     );
   }
-
- private uploadCnt: number = 0;
 }

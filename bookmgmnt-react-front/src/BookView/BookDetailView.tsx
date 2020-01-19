@@ -10,8 +10,7 @@ import { Book } from "../redux/model";
 class BookDetailView extends Component<any, {}> {
   constructor(props: any) {
     super(props);
-    console.log(props);
-
+    
     const { id } = this.props.match.params;
 
     const idnum = parseInt(id);
@@ -39,7 +38,7 @@ class BookDetailView extends Component<any, {}> {
       return <h4 style={{ textAlign: "center" }}>Loading...</h4>;
     }
 
-    const book = this.props.book(this.id);
+    const book:Book = this.props.book(this.id);
     if (!book) {
       return (
         <div className="notfound">
@@ -48,6 +47,7 @@ class BookDetailView extends Component<any, {}> {
         </div>
       );
     }
+    
 
     return (
       <div className="bookdetailview">
