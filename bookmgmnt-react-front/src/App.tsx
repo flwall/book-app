@@ -22,15 +22,17 @@ export default class App extends Component<any,any> {
   constructor(props: any) {
     super(props);
     this.handleUpload = this.handleUpload.bind(this);
-    this.state = { uploading:false, fn: null };
+    this.state = { uploading:false, fn: null , timestamp:null};
   }
 
   handleUpload(f: RcFile): boolean {
     let data = new FormData();
     data.append("bookFile", f);
-    this.setState({uploading:true, fn:null})
+    let timestamp=Date.now().toString();
+    data.append("timestamp", timestamp);
+    this.setState({uploading:true, fn:null});
     fetch(BASE_URL + "/upload", { method: "post", body: data }).then(resp => {
-      this.setState({ uploading:false, fn: f.name });
+      this.setState({ uploading:false, fn: f.name, timestamp: timestamp});
     }).catch(err=>{console.log(err); message.error("Failed to upload Book"); this.setState({uploading:false})});
 
     return false;
@@ -39,7 +41,7 @@ export default class App extends Component<any,any> {
     return (
       <Provider store={store}>
         <Router>
-          {this.state.fn?<Redirect to={{pathname:"/upload", state:{fn:this.state.fn}}} />:""}
+          {this.state.fn?<Redirect to={{pathname:"/upload", state:{fn:this.state.fn, timestamp:this.state.timestamp}}} />:""}
           <Menu mode="horizontal">
             <Menu.Item key="upload">
               <Upload

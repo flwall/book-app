@@ -6,6 +6,7 @@ import {
   ADD_BOOK_ERROR,
   fetchBookSuccess
 } from "./actions";
+import axios from "axios";
 import { ALL_BOOKS, ADD_BOOK, BASE_URL } from "./api-constants";
 import { Book } from "./model";
 
@@ -52,21 +53,14 @@ export function uploadFile(f: File) {
 export function postBook(book: Book) {
   return async (dispatch: any) => {
     dispatch(actionPending());
-    try {
-      const rawResp = await fetch(ADD_BOOK, {
-        method: "POST",
-        body: JSON.stringify(book)
-      });
-
-      if (rawResp.ok) {
-        dispatch({ type: ADD_BOOK_SUCCESS });
-      } else
-        dispatch({
-          type: ADD_BOOK_ERROR,
-          error: JSON.parse(await rawResp.json())
-        });
-    } catch (e) {
-      dispatch({ type: ADD_BOOK_ERROR, error: e });
-    }
+    axios
+      .post(ADD_BOOK, JSON.stringify(book))
+      .then(res =>
+        res.status > 199 && res.status <= 299
+          ? dispatch({ type: ADD_BOOK_SUCCESS })
+          : dispatch({ type: ADD_BOOK_ERROR, error: JSON.parse(res.data) })
+      )
+      .catch(err => dispatch({ type: ADD_BOOK_ERROR, error: err }));
+      
   };
 }

@@ -4,11 +4,18 @@ import React, { Component, FormEvent } from "react";
 
 import { Form, Input, Button, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { postBook } from "../redux/api-middleware";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../redux/api-constants";
 
-export default class BookUploadForm extends Component<any, any> {
+class BookUploadForm extends Component<any, any> {
   handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const { postBook } = this.props;
+    postBook(this.state.book);
 
     console.log("Form Submitted");
   }
@@ -16,6 +23,8 @@ export default class BookUploadForm extends Component<any, any> {
   constructor(props: any) {
     super(props);
 
+    this.cancel = this.cancel.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     if (!this.props.location.state) {
       this.red = true;
     } else {
@@ -27,11 +36,21 @@ export default class BookUploadForm extends Component<any, any> {
           title: title,
           author: { name: "" },
           description: "",
-          rating: 0
+          rating: 0,
+          timestamp: this.props.location.state.timestamp
         },
         file: null
       };
     }
+  }
+  cancel(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
+    
+    axios
+      .post(BASE_URL + "cancel", { timestamp: this.state.book.timestamp })
+      .then(ms => {})
+      .catch(e => console.error(e));
+    this.red = true;
+    this.forceUpdate();
   }
   private red: boolean = false;
   fileChanged(e: React.ChangeEvent<HTMLInputElement>) {
@@ -104,7 +123,9 @@ export default class BookUploadForm extends Component<any, any> {
           />
           <br />
 
-          <br />
+          <Button className="book-cancel" onClick={this.cancel}>
+            Cancel
+          </Button>
           <Button type="primary" htmlType="submit">
             Add Book
           </Button>
@@ -113,3 +134,5 @@ export default class BookUploadForm extends Component<any, any> {
     );
   }
 }
+
+export default connect(null, { postBook })(BookUploadForm);
