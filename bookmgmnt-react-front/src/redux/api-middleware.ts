@@ -54,13 +54,16 @@ export function postBook(book: Book) {
   return async (dispatch: any) => {
     dispatch(actionPending());
     axios
-      .post(ADD_BOOK, JSON.stringify(book))
-      .then(res =>
-        res.status > 199 && res.status <= 299
-          ? dispatch({ type: ADD_BOOK_SUCCESS })
-          : dispatch({ type: ADD_BOOK_ERROR, error: JSON.parse(res.data) })
-      )
+      .post<Book>(ADD_BOOK, JSON.stringify(book), {
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => {
+        if (res.status > 199 && res.status <= 299) {
+          dispatch({ type: ADD_BOOK_SUCCESS, payload: res.data });
+        } else {
+          console.log("Response code !=2xx at posting Book");
+        }
+      })
       .catch(err => dispatch({ type: ADD_BOOK_ERROR, error: err }));
-      
   };
 }

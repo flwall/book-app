@@ -2,16 +2,19 @@ import {
   ACTION_PENDING,
   FETCH_BOOKS_SUCCESS,
   FETCH_BOOKS_ERROR,
-  FETCH_BOOK_SUCCESS
+  FETCH_BOOK_SUCCESS,
+  ADD_BOOK_SUCCESS,
+  ADD_BOOK_ERROR
 } from "./actions";
 import { initialState } from "./initialState";
+import { Book } from "./model";
+
 
 export function booksReducer(state: any = initialState, action: any) {
   switch (action.type) {
     case ACTION_PENDING:
       return {
         ...state,
-        books: [],
         pending: true,
         error: null
       };
@@ -43,6 +46,24 @@ export function booksReducer(state: any = initialState, action: any) {
         pending: false,
         books: arr
       };
+    }
+    case ADD_BOOK_SUCCESS:{
+      const book:Book=action.payload;
+      console.log(state);
+      if(state.books===null){
+
+        return {...state, books:[book],pending:false};
+      }
+      let bs:Array<Book>=state.books;
+      bs.push(book);
+      return {
+        ...state, books:bs, pending:false
+      }
+
+    }
+    case ADD_BOOK_ERROR:{
+      return {...state, error:action.error};
+
     }
     default:
       return state;

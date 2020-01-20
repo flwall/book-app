@@ -16,8 +16,8 @@ class BookUploadForm extends Component<any, any> {
 
     const { postBook } = this.props;
     postBook(this.state.book);
-
-    console.log("Form Submitted");
+    this.red=true;
+    
   }
   rating: number = 0;
   constructor(props: any) {
@@ -46,8 +46,8 @@ class BookUploadForm extends Component<any, any> {
   cancel(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
     
     axios
-      .post(BASE_URL + "cancel", { timestamp: this.state.book.timestamp })
-      .then(ms => {})
+      .post(BASE_URL + "cancel", { timestamp: this.state.book.timestamp }, {headers:{"Content-Type":"application/json"}})
+      .then(ms => {console.log(ms)})
       .catch(e => console.error(e));
     this.red = true;
     this.forceUpdate();
@@ -57,7 +57,7 @@ class BookUploadForm extends Component<any, any> {
     this.setState({ file: e.target.files![0] });
   }
   render() {
-    if (this.red) return <Redirect to="/" />;
+    if (this.red&&!this.props.pending) return <Redirect to="/" />;
     return (
       <div className="bookuploadform">
         <h3 className="upload-title">Add a new Book</h3>
@@ -134,5 +134,11 @@ class BookUploadForm extends Component<any, any> {
     );
   }
 }
+const mapStateToProps=(state:any)=>(
+  {
+    pending: state.pending
+  }
 
-export default connect(null, { postBook })(BookUploadForm);
+);
+
+export default connect(mapStateToProps, { postBook })(BookUploadForm);
