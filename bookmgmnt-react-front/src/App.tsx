@@ -17,6 +17,7 @@ import {
 import { Menu, Icon, Upload, Spin, message } from "antd";
 import { BASE_URL } from "./redux/api-constants";
 import { RcFile } from "antd/lib/upload";
+import BookSearch from "./BookSearch/BookSearch";
 
 export default class App extends Component<any,any> {
   constructor(props: any) {
@@ -52,6 +53,10 @@ export default class App extends Component<any,any> {
                 <Icon type="upload" />
                 Upload Book
               </Upload>
+            </Menu.Item>
+            <Menu.Item key="search">
+              <BookSearch/>
+
             </Menu.Item>
           </Menu>
           {this.state.uploading?<Spin/>:""}

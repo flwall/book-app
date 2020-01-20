@@ -26,6 +26,7 @@ class BookView extends Component<BookProps, {}> {
     fetchBooks();
   }
 
+
   shouldComponentRender() {
     const { pending } = this.props;
 

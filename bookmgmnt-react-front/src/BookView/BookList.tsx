@@ -18,18 +18,21 @@ export default class BookList extends Component<BookProps, BookState> {
     super(props);
     this.state = { bookdetailid: null };
 
-
-  this.onRow=this.onRow.bind(this);  
+    this.onRow = this.onRow.bind(this);
   }
-  
+
   render() {
     if (this.state.bookdetailid != null) {
       return <Redirect to={`/books/${this.state.bookdetailid}`} />;
     }
     const booksWithKeys: any[] = [];
     this.props.books.forEach((b, idx) => {
-      let newone = Object.defineProperty(b, "key", { value: idx });
-      booksWithKeys.push(newone);
+      if ("key" in b) {
+        booksWithKeys.push(b);
+      } else {
+        let newone = Object.defineProperty(b, "key", { value: idx });
+        booksWithKeys.push(newone);
+      }
     });
     const columns: ColumnProps<Book>[] = [
       { title: "Title", key: "title", dataIndex: "title" },
@@ -57,14 +60,11 @@ export default class BookList extends Component<BookProps, BookState> {
   }
 
   private onRow(rcd: Book, idx: number): TableEventListeners {
-   const self=this;
+    const self = this;
     return {
       onClick: evt => {
-        
         self.setState({ bookdetailid: rcd.id });
       }
     };
   }
-  
-  
 }

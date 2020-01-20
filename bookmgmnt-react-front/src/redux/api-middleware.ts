@@ -12,8 +12,12 @@ import { Book } from "./model";
 
 export function fetchBooksIfNotFetched() {
   return (dispatch: any, getState: any) => {
-    if (getState().books === null) return dispatch(fetchBooks());
+    if (getState().books === null || getState().books === undefined) {
+      console.log("FETCHING BOOKS");
+      return dispatch(fetchBooks());
+    }
 
+    console.log("ALREADY FETCHED");
     return Promise.resolve();
   };
 }
@@ -24,6 +28,7 @@ export function fetchBooks() {
       let fetched = await fetch(ALL_BOOKS);
       let books = await fetched.json();
 
+      console.log("BOOKS FETCHED");
       dispatch(fetchBooksSuccess(books));
       return books;
     } catch (e) {

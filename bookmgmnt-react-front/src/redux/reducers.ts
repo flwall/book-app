@@ -19,6 +19,9 @@ export function booksReducer(state: any = initialState, action: any) {
         error: null
       };
     case FETCH_BOOKS_SUCCESS:
+      if(action.payload === null){
+        return {...state, books:null, pending:false};
+      }
       const books = Array.from(action.payload);
 
       return {

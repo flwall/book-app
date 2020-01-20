@@ -20,7 +20,9 @@ class BookDetailView extends Component<any, {}> {
   }
 
   private id: number;
-  componentDidMount() {
+  
+  
+  componentDidMount(){
     if (isNaN(this.id)) return;
 
     const { fetchBooks } = this.props;
