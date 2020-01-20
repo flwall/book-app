@@ -26,7 +26,7 @@ import java.util.Map;
 @ApplicationScoped
 public class UploadResource {
 
-    private static final String UPLOADED_FILE_PATH = "./uploaded/";
+    private static final String UPLOADED_FILE_PATH = "../uploaded/";
     private final Logger logger;
 
     public UploadResource() {
@@ -50,11 +50,7 @@ public class UploadResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response cancelBookUpload(Timestamp timestamp) {
-        timestampFileMap.forEach((s, d) -> {
-            logger.warn("TIMESTAMP SAVED: " + s);
 
-        });
-        logger.warn("REQUESTED Timestamp: " + timestamp.timestamp);
         File f = timestampFileMap.get(timestamp.timestamp);
         if (f == null)
             return Response.notModified().entity("No such Timestamp").build();
@@ -64,8 +60,11 @@ public class UploadResource {
     }
 
 
-    private Map<String, File> timestampFileMap = new HashMap<>();
+    private static Map<String, File> timestampFileMap = new HashMap<>();
 
+    public static Map<String, File> getTimestampFileMap(){
+        return timestampFileMap;
+    }
 
     @POST
     @Path("/uploadCover")

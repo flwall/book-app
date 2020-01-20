@@ -19,7 +19,7 @@ public class DBService {
 
 
     public String dbPath() {
-        return "./";
+        return "../";
     }
 
 

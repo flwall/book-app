@@ -5,6 +5,7 @@ export interface Book {
   author: Author;
   rating: number;
   timestamp:string;     //number as string
+  formats:Array<string>;
 }
 export interface Author {
   name: string;

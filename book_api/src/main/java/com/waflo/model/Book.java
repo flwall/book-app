@@ -30,7 +30,7 @@ public class Book {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
-    private Set<String> formats = new HashSet<>();          //PDF, EPUB, MOBI
+    private Set<String> formats = new HashSet<>();          //PDF, EPUB, MOBI, TXT
 
     @ManyToOne(cascade = CascadeType.ALL)
     @NotNull(message = "Author must not be null")
@@ -43,6 +43,8 @@ public class Book {
     @javax.validation.constraints.Max(value = 5, message = "Rating cannot be > 5")
     private int rating = -1;        //rating between 0 and 5 stars  (-1 for unrated)
 
+    @Transient
+    public String timestamp;
 
     public int getId() {
         return id;
@@ -109,5 +111,8 @@ public class Book {
     }
 
 
+    public void addFormat(String format) {
+        formats.add(format.toUpperCase());
+    }
 }
 
