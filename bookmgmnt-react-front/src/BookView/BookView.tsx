@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-
-import { getBooks, getBooksError, getBooksPending } from "../redux/reducers";
 import { connect } from "react-redux";
 import { fetchBooksIfNotFetched } from "../redux/api-middleware";
 
@@ -54,9 +52,9 @@ class BookView extends Component<BookProps, {}> {
 }
 
 const mapStateToProps = (state: any) => ({
-  error: getBooksError(state),
-  books: getBooks(state),
-  pending: getBooksPending(state)
+  error: state.error,
+  books: state.books,
+  pending: state.pending
 });
 
 export default connect(mapStateToProps, { fetchBooks: fetchBooksIfNotFetched })(

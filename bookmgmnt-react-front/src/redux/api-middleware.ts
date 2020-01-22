@@ -6,18 +6,16 @@ import {
   ADD_BOOK_ERROR,
   fetchBookSuccess
 } from "./actions";
-import axios from "axios";
+
 import { ALL_BOOKS, ADD_BOOK, BASE_URL } from "./api-constants";
 import { Book } from "./model";
 
 export function fetchBooksIfNotFetched() {
   return (dispatch: any, getState: any) => {
     if (getState().books === null || getState().books === undefined) {
-      console.log("FETCHING BOOKS");
       return dispatch(fetchBooks());
     }
 
-    console.log("ALREADY FETCHED");
     return Promise.resolve();
   };
 }
@@ -28,7 +26,6 @@ export function fetchBooks() {
       let fetched = await fetch(ALL_BOOKS);
       let books = await fetched.json();
 
-      console.log("BOOKS FETCHED");
       dispatch(fetchBooksSuccess(books));
       return books;
     } catch (e) {
@@ -58,17 +55,18 @@ export function uploadFile(f: File) {
 export function postBook(book: Book) {
   return async (dispatch: any) => {
     dispatch(actionPending());
-    axios
-      .post<Book>(ADD_BOOK, JSON.stringify(book), {
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => {
-        if (res.status > 199 && res.status <= 299) {
-          dispatch({ type: ADD_BOOK_SUCCESS, payload: res.data });
-        } else {
-          console.log("Response code !=2xx at posting Book");
+    fetch(ADD_BOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book)
+    })
+      .then(async res => {
+        if (res.ok) {
+          res
+            .json()
+            .then(js => dispatch({ type: ADD_BOOK_SUCCESS, payload: js }));
         }
       })
-      .catch(err => dispatch({ type: ADD_BOOK_ERROR, error: err }));
+      .catch(e => dispatch({ type: ADD_BOOK_ERROR, error: e }));
   };
 }

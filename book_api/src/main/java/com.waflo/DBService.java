@@ -38,9 +38,7 @@ public class DBService {
 
     @Transactional()
     public void insertBook(Book book) {
-        Author authorObj = em.createQuery("select a from Author a where a.name like :authName", Author.class).setParameter("authName", book.getAuthor().getName()).getResultStream().findFirst().orElse(null);
-        if (authorObj != null)
-            book.setAuthor(authorObj);
+        em.createQuery("select a from Author a where a.name like :authName", Author.class).setParameter("authName", book.getAuthor().getName()).getResultStream().findFirst().ifPresent(book::setAuthor);
 
         Book b = em.createQuery("select b from Book b where b.title like :title", Book.class).setParameter("title", book.getTitle()).getResultStream().findFirst().orElse(null);
         if (b != null)

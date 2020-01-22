@@ -42,7 +42,7 @@ class BookSearch extends Component<any, any> {
         return false;
       })
     );
-    console.log("books Filtered");
+    
   }
   render() {
     return (

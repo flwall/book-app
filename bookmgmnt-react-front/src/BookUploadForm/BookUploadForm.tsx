@@ -7,18 +7,22 @@ import TextArea from "antd/lib/input/TextArea";
 import { postBook } from "../redux/api-middleware";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import { BASE_URL } from "../redux/api-constants";
 
-class BookUploadForm extends Component<any, any> {
+import { BASE_URL } from "../redux/api-constants";
+import { Book } from "../redux/model";
+import EditableTagGroup from "./EditableTagGroup";
+interface UploadState {
+  book: Book;
+}
+class BookUploadForm extends Component<any, UploadState> {
   handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const { postBook } = this.props;
     postBook(this.state.book);
-    this.red=true;
-    
+    this.red = true;
   }
+
   rating: number = 0;
   constructor(props: any) {
     super(props);
@@ -37,27 +41,26 @@ class BookUploadForm extends Component<any, any> {
           author: { name: "" },
           description: "",
           rating: 0,
-          timestamp: this.props.location.state.timestamp
-        },
-        file: null
+          timestamp: this.props.location.state.timestamp,
+          tags: []
+        }
       };
     }
   }
   cancel(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
-    
-    axios
-      .post(BASE_URL + "cancel", { timestamp: this.state.book.timestamp }, {headers:{"Content-Type":"application/json"}})
-      .then(ms => {console.log(ms)})
-      .catch(e => console.error(e));
+    fetch(BASE_URL + "cancel", {
+      method: "POST",
+      body: JSON.stringify({ timestamp: this.state.book.timestamp }),
+      headers: { "Content-Type": "application/json" }
+    }).catch(err => console.log(err));
+
     this.red = true;
     this.forceUpdate();
   }
   private red: boolean = false;
-  fileChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ file: e.target.files![0] });
-  }
+
   render() {
-    if (this.red&&!this.props.pending) return <Redirect to="/" />;
+    if (this.red && !this.props.pending) return <Redirect to="/" />;
     return (
       <div className="bookuploadform">
         <h3 className="upload-title">Add a new Book</h3>
@@ -73,11 +76,11 @@ class BookUploadForm extends Component<any, any> {
               placeholder="Book Title"
               name="title"
               value={this.state.book.title}
-              onChange={e => {
-                const { book } = Object.assign({}, this.state);
-                book.title = e.target.value;
-                this.setState({ book: book });
-              }}
+              onChange={e =>
+                this.setState({
+                  book: { ...this.state.book, title: e.target.value }
+                })
+              }
             />
           </Form.Item>
           <TextArea
@@ -87,11 +90,11 @@ class BookUploadForm extends Component<any, any> {
             id="book-desc"
             value={this.state.book.description}
             placeholder="Book Description"
-            onChange={e => {
-              let { book } = Object.assign({}, this.state);
-              book.description = e.target.value;
-              this.setState({ book: book });
-            }}
+            onChange={e =>
+              this.setState({
+                book: { ...this.state.book, description: e.target.value }
+              })
+            }
           />
           <br />
           <Input
@@ -101,7 +104,6 @@ class BookUploadForm extends Component<any, any> {
             value={this.state.book.author.name}
             onChange={e =>
               this.setState({
-                ...this.state,
                 book: {
                   ...this.state.book,
                   author: { ...this.state.book.author, name: e.target.value }
@@ -111,7 +113,7 @@ class BookUploadForm extends Component<any, any> {
             className="book-inp"
           />
           <div id="book-rat"> Rating (1-5): </div>
-          <Rate
+          <Rate style={{marginBottom:10}}
             allowClear={false}
             value={this.state.book.rating}
             onChange={e =>
@@ -122,6 +124,13 @@ class BookUploadForm extends Component<any, any> {
             }
           />
           <br />
+
+          <EditableTagGroup
+            setTags={(tags: Array<string>) =>
+              this.setState({ book: { ...this.state.book, tags: tags } })
+            }
+            tags={this.state.book.tags}
+          />
 
           <Button className="book-cancel" onClick={this.cancel}>
             Cancel
@@ -134,11 +143,8 @@ class BookUploadForm extends Component<any, any> {
     );
   }
 }
-const mapStateToProps=(state:any)=>(
-  {
-    pending: state.pending
-  }
-
-);
+const mapStateToProps = (state: any) => ({
+  pending: state.pending
+});
 
 export default connect(mapStateToProps, { postBook })(BookUploadForm);

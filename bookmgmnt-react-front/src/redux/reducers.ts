@@ -9,7 +9,6 @@ import {
 import { initialState } from "./initialState";
 import { Book } from "./model";
 
-
 export function booksReducer(state: any = initialState, action: any) {
   switch (action.type) {
     case ACTION_PENDING:
@@ -19,8 +18,8 @@ export function booksReducer(state: any = initialState, action: any) {
         error: null
       };
     case FETCH_BOOKS_SUCCESS:
-      if(action.payload === null){
-        return {...state, books:null, pending:false};
+      if (action.payload === null) {
+        return { ...state, books: null, pending: false };
       }
       const books = Array.from(action.payload);
 
@@ -38,41 +37,36 @@ export function booksReducer(state: any = initialState, action: any) {
         error: action.error
       };
     case FETCH_BOOK_SUCCESS: {
-      
-      const book=Object.assign({}, action.payload);
-      
-      const arr=[];
+      const book = action.payload;
+
+      const arr = [];
       arr.push(book);
-      
+
       return {
         ...state,
         pending: false,
         books: arr
       };
     }
-    case ADD_BOOK_SUCCESS:{
-      const book:Book=action.payload;
-      console.log(state);
-      if(state.books===null){
+    case ADD_BOOK_SUCCESS: {
+      const book: Book = action.payload;
 
-        return {...state, books:[book],pending:false};
+      if (state.books === null) {
+        return { ...state, books: [book], pending: false };
       }
-      let bs:Array<Book>=state.books;
+      let bs: Array<Book> = state.books;
       bs.push(book);
       return {
-        ...state, books:bs, pending:false
-      }
-
+        ...state,
+        books: bs,
+        pending: false
+      };
     }
-    case ADD_BOOK_ERROR:{
-      return {...state, error:action.error};
-
+    case ADD_BOOK_ERROR: {
+      return { ...state, error: action.error };
     }
     default:
       return state;
   }
 }
 
-export const getBooks = (state: any) => state.books;
-export const getBooksPending = (state: any) => state.pending;
-export const getBooksError = (state: any) => state.error;
