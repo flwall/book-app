@@ -4,7 +4,8 @@ import {
   fetchBooksSuccess,
   ADD_BOOK_SUCCESS,
   ADD_BOOK_ERROR,
-  fetchBookSuccess
+  fetchBookSuccess,
+  DELETE_BOOK_SUCCESS
 } from "./actions";
 
 import { ALL_BOOKS, ADD_BOOK, BASE_URL } from "./api-constants";
@@ -51,7 +52,21 @@ export function uploadFile(f: File) {
   let data = new FormData();
   data.append("file", f);
 }
+export function deleteBook(book:Book){
+ return async (dispatch:any)=>{
+   dispatch(actionPending());
+    const resp=await fetch(BASE_URL+"books/"+book.id, {method:"DELETE"});
+    
+    if(resp.ok){
+      dispatch({type:DELETE_BOOK_SUCCESS, payload: book })
+      
+    }else{
+      console.log("DELETE RESPONSE not OK");
+    }
 
+ }
+
+}
 export function postBook(book: Book) {
   return async (dispatch: any) => {
     dispatch(actionPending());

@@ -6,6 +6,7 @@ export const FETCH_BOOK_SUCCESS="FETCH_BOOK_SUCCESS";
 export const FETCH_BOOKS_ERROR = "FETCH_BOOKS_ERROR";
 export const ADD_BOOK_SUCCESS="ADD_BOOK_SUCCESS";
 export const ADD_BOOK_ERROR="ADD_BOOK_ERROR";
+export const DELETE_BOOK_SUCCESS="DELETE_BOOK_SUCCESS";
 
 export function actionPending() {
   return {

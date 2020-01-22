@@ -73,4 +73,10 @@ public class DBService {
     public void insertAuthor(Author author) {
         em.persist(author);
     }
+
+    public void remove(Book b) {
+        em.remove(b);
+
+
+    }
 }

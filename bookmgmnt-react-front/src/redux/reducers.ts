@@ -4,7 +4,8 @@ import {
   FETCH_BOOKS_ERROR,
   FETCH_BOOK_SUCCESS,
   ADD_BOOK_SUCCESS,
-  ADD_BOOK_ERROR
+  ADD_BOOK_ERROR,
+  DELETE_BOOK_SUCCESS
 } from "./actions";
 import { initialState } from "./initialState";
 import { Book } from "./model";
@@ -65,8 +66,14 @@ export function booksReducer(state: any = initialState, action: any) {
     case ADD_BOOK_ERROR: {
       return { ...state, error: action.error };
     }
+    case DELETE_BOOK_SUCCESS: {
+      let books: Array<Book> = state.books;
+      const book = action.payload;
+
+      books = books.filter(b => b.id !== book.id);
+      return { ...state, books: books, pending:false };
+    }
     default:
       return state;
   }
 }
-

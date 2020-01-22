@@ -76,6 +76,21 @@ public class BookResource {
         return dbService.getBooks();
     }
 
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteBook(@QueryParam("id") int id) {
+        Book b = dbService.get(Book.class, id);
+        if (b == null) return Response.status(204).entity("No such Book").build();
+
+
+        File bookpath = new File(b.getPath_to_book()+b.getTitle()+"."+b.getFormat());
+        bookpath.delete();
+        dbService.remove(b);
+        return Response.ok("Book deleted").build();
+
+    }
+
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

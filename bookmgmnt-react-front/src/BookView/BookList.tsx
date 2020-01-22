@@ -36,7 +36,7 @@ export default class BookList extends Component<BookProps, BookState> {
     });
     const columns: ColumnProps<Book>[] = [
       { title: "Title", key: "title", dataIndex: "title" },
-      { title: "Description", key: "description", dataIndex: "description" },
+     // { title: "Description", key: "description", dataIndex: "description" },
       { title: "Author", dataIndex: "author.name" },
       {
         title: "Rating",

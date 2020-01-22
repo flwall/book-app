@@ -1,11 +1,13 @@
-.title {
-    text-align: center;
 
-}
+
 
 .notfound {
     text-align: center;
+}
 
-
-
+.book-det {
+    text-align: center;
+}
+#dlbtn{
+    margin-top:15px;
 }

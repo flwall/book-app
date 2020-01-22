@@ -4,11 +4,11 @@ import "./BookDetailView.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchBooksIfNotFetched } from "../redux/api-middleware";
+import { fetchBooksIfNotFetched, deleteBook } from "../redux/api-middleware";
 import { Redirect, Link } from "react-router-dom";
 
 import { Book } from "../redux/model";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 import { BASE_URL } from "../redux/api-constants";
 
 class BookDetailView extends Component<any, any> {
@@ -22,6 +22,8 @@ class BookDetailView extends Component<any, any> {
 
     this.componentDidMount = this.componentDidMount.bind(this);
     this.download = this.download.bind(this);
+    this.deleteClicked = this.deleteClicked.bind(this);
+    this.state = { deleted: false };
   }
 
   private id: number;
@@ -40,6 +42,9 @@ class BookDetailView extends Component<any, any> {
   }
 
   render() {
+    if (this.state.deleted) {
+      return <Redirect to={{ pathname: "/" }} />;
+    }
     if (isNaN(this.id)) return <Redirect to="/" />;
     if (!this.shouldComponentRender()) {
       return <h4 style={{ textAlign: "center" }}>Loading...</h4>;
@@ -55,11 +60,38 @@ class BookDetailView extends Component<any, any> {
       );
     }
 
-    return (
-      <div className="bookdetailview">
-        <h2 className="title">{book.title}</h2>
+    const tags = book.tags.map((t, id) => (
+      <Tag key={id} closable={false}>
+        {t}
+      </Tag>
+    ));
 
-        <Button onClick={this.download}>Download Book</Button>
+    return (
+      <div className="book-det">
+        <h2 className="book-det">{book.title}</h2>
+        <div>
+          <b>Author:</b>
+          {book.author.name}
+        </div>
+        <br />
+        <div>
+          <b>Description:</b> <br />
+          {book.description}
+        </div>
+        <br />
+        <div>
+          <b>Tags:</b>
+          <br />
+          {tags}
+        </div>
+        <br />
+
+        <Button type="danger" onClick={this.deleteClicked}>
+          Delete Book
+        </Button>
+        <Button className="book-det" id="dlbtn" onClick={this.download}>
+          Download Book
+        </Button>
       </div>
     );
   }
@@ -82,6 +114,17 @@ class BookDetailView extends Component<any, any> {
       })
       .catch(err => console.log(err));
   }
+
+  deleteClicked(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    const { deleteBook } = this.props;
+    deleteBook(this.props.book(this.id));
+    this.setState({ deleted: true });
+  }
+  componentDidUpdate() {
+    if (!this.props.pending && this.state.deleted) {
+      //this.forceUpdate();
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => {
@@ -96,6 +139,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchBooks: fetchBooksIfNotFetched })(
-  BookDetailView
-);
+export default connect(mapStateToProps, {
+  fetchBooks: fetchBooksIfNotFetched,
+  deleteBook: deleteBook
+})(BookDetailView);
