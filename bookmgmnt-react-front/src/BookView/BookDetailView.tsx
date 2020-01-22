@@ -89,7 +89,8 @@ class BookDetailView extends Component<any, any> {
         <Button type="danger" onClick={this.deleteClicked}>
           Delete Book
         </Button>
-        <Button className="book-det" id="dlbtn" onClick={this.download}>
+        <br/>
+        <Button className="book-det" type="primary" id="dlbtn" onClick={this.download}>
           Download Book
         </Button>
       </div>
