@@ -21,16 +21,16 @@ public class Book {
     @NotEmpty(message = "Title must not be empty")
     private String title;
 
-    @Column
+    @Column(length = 2048)
     private String description;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private Set<String> tags = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    private Set<String> formats = new HashSet<>();          //PDF, EPUB, MOBI
+    //  @ElementCollection(fetch = FetchType.EAGER)
+    //@Fetch(FetchMode.SELECT)
+    private String format;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @NotNull(message = "Author must not be null")
@@ -43,6 +43,8 @@ public class Book {
     @javax.validation.constraints.Max(value = 5, message = "Rating cannot be > 5")
     private int rating = -1;        //rating between 0 and 5 stars  (-1 for unrated)
 
+    @Transient
+    public String timestamp;
 
     public int getId() {
         return id;
@@ -76,12 +78,12 @@ public class Book {
         this.tags = tags;
     }
 
-    public Set<String> getFormats() {
-        return formats;
+    public String getFormat() {
+        return format;
     }
 
-    public void setFormats(Set<String> formats) {
-        this.formats = formats;
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public Author getAuthor() {

@@ -1,1 +1,38 @@
-ECHO is on.
+
+.bookuploadform{
+    text-align: center;
+}
+.book-label{
+    margin-right: 20px;
+}
+#book-desc{
+    resize: none;
+    margin-top:5px;
+}
+
+
+.book-inp{
+    width: 40%;
+    min-width: 100px;
+    
+}
+
+#book-rat{
+    margin-top: 20px;
+    margin-bottom: auto;
+
+}
+
+
+
+.ant-form-item{
+    margin-bottom:0px;
+}
+#book-authorname{
+    margin-top:5px;
+}
+
+.book-cancel{
+    margin-right: 20px;
+    margin-top:20px;
+}

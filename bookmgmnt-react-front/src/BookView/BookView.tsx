@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-
-import { getBooks, getBooksError, getBooksPending } from "../redux/reducers";
 import { connect } from "react-redux";
-import { fetchBooks } from "../redux/api-middleware";
-import { bindActionCreators } from "redux";
+import { fetchBooksIfNotFetched } from "../redux/api-middleware";
+
 import { Book } from "../redux/model";
 import BookList from "./BookList";
 
@@ -26,29 +24,27 @@ class BookView extends Component<BookProps, {}> {
     fetchBooks();
   }
 
+
   shouldComponentRender() {
     const { pending } = this.props;
-    
+
     if (pending === true) return false;
 
     return true;
   }
 
   render() {
-    const { books, pending, error } = this.props;
+    const { books, error } = this.props;
 
     if (!this.shouldComponentRender()) {
-      
-      return "Loading Books...";
+      return <h4 style={{ textAlign: "center" }}>Loading Books...</h4>;
     }
     if (error !== null) {
-      alert("Failed to load Books");
-      return null;
+      return <h4 style={{ textAlign: "center" }}>Failed to load Books</h4>;
     }
-    
+
     return (
-      <div className="product-list-wrapper">
-        {error && <span className="product-list-error">{error}</span>}
+      <div className="book-list-wrapper">
         <BookList books={books} />
       </div>
     );
@@ -56,17 +52,11 @@ class BookView extends Component<BookProps, {}> {
 }
 
 const mapStateToProps = (state: any) => ({
-  error: getBooksError(state),
-  books: getBooks(state),
-  pending: getBooksPending(state)
+  error: state.error,
+  books: state.books,
+  pending: state.pending
 });
 
-const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators(
-    {
-      fetchBooks: fetchBooks
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(BookView);
+export default connect(mapStateToProps, { fetchBooks: fetchBooksIfNotFetched })(
+  BookView
+);

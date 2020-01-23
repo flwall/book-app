@@ -10,6 +10,9 @@ bin/
 *.iml
 *.iws
 
+books/
+uploaded
+
 # NetBeans
 nb-configuration.xml
 
