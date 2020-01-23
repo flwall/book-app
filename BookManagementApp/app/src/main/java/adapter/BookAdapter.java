@@ -36,7 +36,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHold
             mView = itemView;
 
             txtTitle = mView.findViewById(R.id.title);
-
         }
     }
 

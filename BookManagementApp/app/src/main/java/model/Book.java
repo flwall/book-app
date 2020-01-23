@@ -12,7 +12,7 @@ public class Book {
     @SerializedName("description")
     private String description;
     @SerializedName("rating")
-    private String rating;
+    private int rating;
     @SerializedName("formats")
     private String[] formats;
     @SerializedName("tags")
@@ -20,7 +20,7 @@ public class Book {
     @SerializedName("path_to_book")
     private String path_to_book;
 
-    public Book(int bookId, String title, Author author, String description, String rating, String[] formats, String[] tags, String path_to_book) {
+    public Book(int bookId, String title, Author author, String description, int rating, String[] formats, String[] tags, String path_to_book) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -63,11 +63,11 @@ public class Book {
         this.description = description;
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -93,5 +93,10 @@ public class Book {
 
     public void setPath_to_book(String path_to_book) {
         this.path_to_book = path_to_book;
+    }
+
+    @Override
+    public String toString() {
+        return bookId + " " + title + "by " + author;
     }
 }

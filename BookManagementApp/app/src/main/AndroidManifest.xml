@@ -14,12 +14,14 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="activity.MainActivity">
+        <activity android:name="activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
                     <category android:name="android.intent.category.DEFAULT" />
                 </intent-filter>
         </activity>
+
         <activity android:name="activity.SplashScreen" android:theme="@style/AppTheme.SplashScreen">
           <intent-filter>
               <action android:name="android.intent.action.MAIN" />
@@ -27,7 +29,10 @@
 
           </intent-filter>
 
-      </activity>
+        </activity>
+        <activity android:name="activity.DetailBookActivity">
+
+        </activity>
 
 
     </application>

@@ -11,7 +11,7 @@ public interface GetDataService {
     @GET("/books")
     Call<List<Book>>getAllBooks();
 
-    @GET("/Authors")
+    @GET("/authors")
     Call<List<Author>>getAllAuthors();
 
 }
