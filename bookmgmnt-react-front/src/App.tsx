@@ -30,6 +30,7 @@ export default class App extends Component<any, AppState> {
   }
 
   handleUpload(f: RcFile): boolean {
+
     let data = new FormData();
     data.append("bookFile", f);
     let timestamp = Date.now().toString();
@@ -79,12 +80,11 @@ export default class App extends Component<any, AppState> {
           {this.state.uploading ? <Spin /> : ""}
 
           <Switch>
-            <Route exact path="/">
-              <BookView />
-            </Route>
-            <Route path="/books/:id" component={BookDetailView} />
-            <Route path="/upload" component={BookUploadForm} />
-            <Route path="/">
+            <Route exact path="/" component={BookView} key={2}/>
+
+            <Route path="/books/:id" component={BookDetailView} key={3}/>
+            <Route path="/upload" component={BookUploadForm} key={4} />
+            <Route path="/" key={5}>
               <Redirect to="/" />{" "}
             </Route>
           </Switch>

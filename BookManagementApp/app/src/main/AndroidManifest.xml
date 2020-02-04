@@ -30,9 +30,8 @@
           </intent-filter>
 
         </activity>
-        <activity android:name="activity.DetailBookActivity">
-
-        </activity>
+        <activity android:name="activity.DetailBookActivity" />
+        <activity android:name="activity.DetailAuthorActivity" />
 
 
     </application>

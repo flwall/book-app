@@ -28,9 +28,10 @@ public class Book {
     @Fetch(FetchMode.SELECT)
     private Set<String> tags = new HashSet<>();
 
-    //  @ElementCollection(fetch = FetchType.EAGER)
-    //@Fetch(FetchMode.SELECT)
-    private String format;
+
+
+    @Column(name = "format")
+    private String format;      //PDF, EPUB
 
     @ManyToOne(cascade = CascadeType.ALL)
     @NotNull(message = "Author must not be null")
@@ -39,9 +40,9 @@ public class Book {
     @Column(name = "path")
     private String path_to_book;
 
-    @javax.validation.constraints.Min(value = -1, message = "Rating cannot be < 0")
+    @javax.validation.constraints.Min(value = 0, message = "Rating cannot be < 0")
     @javax.validation.constraints.Max(value = 5, message = "Rating cannot be > 5")
-    private int rating = -1;        //rating between 0 and 5 stars  (-1 for unrated)
+    private int rating = 0;        //rating between 0 and 5 stars  (-1 for unrated)
 
     @Transient
     public String timestamp;

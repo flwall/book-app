@@ -46,6 +46,7 @@ public class DBService {
 
         try {
             em.persist(book);
+
         } catch (Throwable t) {
             logger.warn(t.getMessage());
             throw t;
@@ -74,7 +75,9 @@ public class DBService {
         em.persist(author);
     }
 
+    @Transactional
     public void remove(Book b) {
+        b=em.merge(b);
         em.remove(b);
 
 

@@ -36,9 +36,8 @@ public class BookFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(
+        return inflater.inflate(
                 R.layout.fragment_book, container, false);
-        return rootView;
     }
 
     @Override

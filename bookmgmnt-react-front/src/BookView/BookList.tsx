@@ -23,6 +23,7 @@ export default class BookList extends Component<BookProps, BookState> {
 
   render() {
     if (this.state.bookdetailid != null) {
+      
       return <Redirect to={`/books/${this.state.bookdetailid}`} />;
     }
     const booksWithKeys: any[] = [];

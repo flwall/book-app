@@ -21,7 +21,6 @@ import java.util.Map;
 
 @Path("/books")
 @ApplicationScoped
-
 public class BookResource {
 
 
@@ -79,12 +78,12 @@ public class BookResource {
     @DELETE
     @Path("{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteBook(@QueryParam("id") int id) {
+    public Response deleteBook(@PathParam("id") int id) {
         Book b = dbService.get(Book.class, id);
         if (b == null) return Response.status(204).entity("No such Book").build();
 
 
-        File bookpath = new File(b.getPath_to_book()+b.getTitle()+"."+b.getFormat());
+        File bookpath = new File(b.getPath_to_book() + b.getTitle() + "." + b.getFormat());
         bookpath.delete();
         dbService.remove(b);
         return Response.ok("Book deleted").build();
@@ -104,11 +103,16 @@ public class BookResource {
 
     @Path("{id}/download")
     @POST
-    public Response downloadBook(@QueryParam("id") int id) {
+    public Response downloadBook(@PathParam("id") int id) {
+
+
         Book b = dbService.get(Book.class, id);
-        if (b == null) return null;
+        if (b == null) {
+            return null;
+        }
         File f = new File(b.getPath_to_book() + b.getTitle().toLowerCase() + "." + b.getFormat().toLowerCase());
-        logger.warn(f.getAbsolutePath());
+
+
 
         try {
             return Response.ok(IOUtils.toByteArray(new FileInputStream(f))).header("Content-Disposition", "attachment; filename=" + b.getTitle().toLowerCase() + "." + b.getFormat().toLowerCase()).build();

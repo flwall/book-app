@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
+import java.util.Objects;
+
 import at.ac.htlperg.bookmanagement.R;
 import model.Author;
 
@@ -19,7 +21,7 @@ public class DetailAuthorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_author_activity);
-        String authorjson = (String)getIntent().getExtras().get("author");
+        String authorjson = (String) Objects.requireNonNull(getIntent().getExtras()).get("author");
         author = new Gson().fromJson(authorjson, Author.class);
 
         authorname = findViewById(R.id.authorname);

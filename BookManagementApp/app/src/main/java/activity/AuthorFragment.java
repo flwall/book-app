@@ -22,7 +22,6 @@ import java.util.List;
 import adapter.AuthorAdapter;
 import at.ac.htlperg.bookmanagement.R;
 import model.Author;
-import model.Book;
 import rest.GetDataService;
 import rest.RetrofitClientInstance;
 import retrofit2.Call;
@@ -38,9 +37,8 @@ public class AuthorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(
+        return inflater.inflate(
                 R.layout.fragment_book, container, false);
-        return rootView;
     }
 
     @Override
@@ -88,7 +86,7 @@ public class AuthorFragment extends Fragment {
 
     private void openDetailActivity(Author author){
         Intent myIntent = new Intent(getContext(), DetailAuthorActivity.class);
-        myIntent.putExtra("author", new Gson().toJson(author, Book.class));
+        myIntent.putExtra("author", new Gson().toJson(author, Author.class));
         startActivity(myIntent);
     }
 

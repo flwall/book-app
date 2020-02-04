@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,16 +18,22 @@ import model.Book;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHolder> {
 
     private List<Book> bookList;
-    private Context context;
 
     public BookAdapter(Context context, List<Book> bookList){
-        this.context = context;
         this.bookList = bookList;
+    }
+
+    @NonNull
+    @Override
+    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.custom_row, parent, false);
+        return new CustomViewHolder(view);
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        public final View mView;
+        final View mView;
 
         TextView txtTitle;
         private ImageView coverImage;
@@ -37,13 +44,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.CustomViewHold
 
             txtTitle = mView.findViewById(R.id.title);
         }
-    }
-
-    @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.custom_row, parent, false);
-        return new CustomViewHolder(view);
     }
 
     @Override

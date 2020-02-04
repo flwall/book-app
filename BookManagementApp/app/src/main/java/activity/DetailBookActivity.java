@@ -1,17 +1,17 @@
 package activity;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
+
+import java.util.Objects;
 
 import at.ac.htlperg.bookmanagement.R;
 import model.Book;
@@ -27,7 +27,7 @@ public class DetailBookActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_book_activity);
-        String bookjson = (String)getIntent().getExtras().get("book");
+        String bookjson = (String) Objects.requireNonNull(getIntent().getExtras()).get("book");
         book = new Gson().fromJson(bookjson, Book.class);
 
         title = findViewById(R.id.title_textview);
@@ -36,10 +36,11 @@ public class DetailBookActivity extends AppCompatActivity {
         ratingBar.setRating(book.getRating());
         ratingBar.setEnabled(false);
 
-        LayerDrawable layerDrawable = (LayerDrawable) ratingBar.getProgressDrawable();
-        layerDrawable.getDrawable(2).setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
-        layerDrawable.getDrawable(1).setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
-        layerDrawable.getDrawable(0).setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);//when not selected
+
+        EditText desc = findViewById(R.id.descriptionField);
+        desc.setText(book.getDescription());
+        desc.setKeyListener(null);
+
     }
 
 

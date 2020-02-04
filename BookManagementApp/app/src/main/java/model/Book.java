@@ -17,6 +17,7 @@ public class Book {
     private String[] formats;
     @SerializedName("tags")
     private String[] tags;
+
     @SerializedName("path_to_book")
     private String path_to_book;
 
