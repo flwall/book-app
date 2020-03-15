@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+    react-front:
+        container_name: react-front
+        build: ./bookmgmnt-react-front
+        ports:
+            - '8001:80'
+        links:
+            - "api:api"
+    api:
+        container_name: book_api
+        build: 
+            context: ./book_api
+            dockerfile: ./src/main/docker/Dockerfile.jvm
+        ports: 
+            - '8585:8080'

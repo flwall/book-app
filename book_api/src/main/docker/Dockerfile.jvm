@@ -32,4 +32,23 @@
 # run with user 1001
 # USER 1001
 
+FROM quay.io/quarkus/centos-quarkus-maven:19.2.1 AS mvn
+# RUN mkdir /app
+COPY . /app
+WORKDIR /app
+
+USER root
+RUN chown -R quarkus /app
+USER quarkus
+RUN mvn package
+
 # ENTRYPOINT [ "/deployments/run-java.sh" ]
+FROM openjdk:8-jre-slim
+#RUN mkdir -p /app/target
+COPY --from=mvn /app/target/lib /app/target/lib
+COPY --from=mvn /app/target/*runner.jar /app/target
+RUN mv /app/target/*runner.jar /app/target/runner.jar
+
+EXPOSE 8080
+RUN ls -la /app/target/
+CMD ["java", "-jar", "/app/target/runner.jar"]
