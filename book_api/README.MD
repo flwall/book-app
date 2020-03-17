@@ -1,6 +1,6 @@
 **Running the Application:**  
 For a Dev Run: `mvnw quarkus:dev`   
- -> App runs on localhost:8080  (can be configured in application.properties with quarkus.http.port=<port>)
+ -> App runs on localhost:8080  (can be configured in application.properties with quarkus.http.port=portnumber)
 
 To Package the application into a jar:
 `mvnw clean package`

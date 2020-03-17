@@ -4,16 +4,16 @@ And a React JS Frontend Application
 
 # Installation
 
-``docker-compose build``
+``docker-compose build``  
 ``docker-compose up``
 
 Afterwards, the React Frontend runs on port 8001
 
 ## Installation (without Docker):  
 ### To start the server
-    ``cd book_api&&mvnw package&&java -jar target/*runner.jar``
+`` cd book_api && mvnw package && java -jar target/*runner.jar `` 
 ### To start the React Frontend (using npm):
-    ``cd bookmgmnt-react-front&&npm install&&npm start``
+``cd bookmgmnt-react-front&&npm install&&npm start``
 
 # Disclaimer
 
